@@ -1,6 +1,57 @@
 #!/usr/bin/env node
 import yargs from 'yargs'
 import {writeFile} from 'fs/promises'
+import mysql from "mysql2"
+//connection to the database
+let darknav
+const db= mysql.createConnection(
+  {
+    host:"localhost",
+    user:"root",
+    password:"@iamLehcsma9",
+    database:"cgen"
+  }
+)
+//actually connect to the database
+/*
+db.connect((error)=>{
+  if(error){
+    throw error
+  }
+  console.log("database connected")
+
+})
+*/
+//read dark navbar code
+const getDark= ()=>{
+    const promise = new Promise((resolve, reject) => {
+        db.query("SELECT dark from navbar", (err, res, fields) => {
+            if (err) reject(err);
+
+            resolve(res);
+        });
+    });
+    return promise;
+}
+//async
+ const wait=async()=> {
+
+    try{
+        const data = await getDark();
+        //console.log(data)
+        darknav=data
+        
+       // console.log(darknav)
+        return darknav
+    } catch(e) {
+        console.log(e);
+    }
+}
+
+ await wait()
+//console.log(  darknav[0].dark)
+
+
 
 
 const {argv}= yargs(process.argv)
@@ -10,23 +61,7 @@ if(argv.nav==="dark"){
     await writeFile("./html.txt", 
     
     `
-    <!--copy this code into a html file where you want to use it!-->
-    <div class="header header-fixed">
-        <div class="navbar container">
-            <div class="logo"><a href="#home">LOGO</a></div>
-            <input type="checkbox" id="navbar-toggle" >
-            <label for="navbar-toggle"><i></i></label>
-            <nav class="menu">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#contacts">Contacts</a></li>
-                </ul>
-            </nav>        
-        </div>
-    </div>
-          
+   ${darknav[0].dark}     
     `, { flag: 'a+' }
     )
     await writeFile("./main.css",`body {

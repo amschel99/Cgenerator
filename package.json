@@ -6,12 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "bin":{
-    "sitegen":"./sitegen.mjs"
+  "bin": {
+    "sitegen": "./sitegen.mjs"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "mysql2": "^2.3.3",
     "yargs": "^17.5.0"
   }
 }
